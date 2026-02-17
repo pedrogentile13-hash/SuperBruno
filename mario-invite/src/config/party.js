@@ -7,16 +7,16 @@ export const PARTY_CONFIG = {
   birthday: {
     name: 'Bruno',
     age: 5,
-    date: 'XX/04/2026',
+    date: '18/04/2026',
     time: '18:00',
     location: {
-      label: 'A Definir',
-      mapsUrl: 'https://maps.google.com/?q=A+Definir', // ← editar com endereço real
+      label: 'Ateliê da Vila Buffet',
+      mapsUrl: 'https://maps.app.goo.gl/Uq8bhkUSY2fPPQGG9',
     },
   },
 
   contact: {
-    whatsapp: '5511999999999', // ← editar: DDI + DDD + número (sem espaços ou hífen)
+    whatsapp: '5511993769919',
     message: 'Confirmando presença de [NOME] na festa do Bruno! 🍄',
   },
 
