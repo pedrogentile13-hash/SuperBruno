@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#5C94FC" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>🍄 Festa do Bruno — 5 Anos!</title>
+
+  <!-- Press Start 2P Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/src/styles/global.css" />
+  <link rel="stylesheet" href="/src/styles/game.css" />
+  <link rel="stylesheet" href="/src/styles/invite.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TELA DE INÍCIO (Start Screen)
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="start-screen" class="start-screen">
+    <div class="start-content">
+      <div class="start-title">
+        <span class="title-line-1">SUPER</span>
+        <span class="title-line-2">BRUNO</span>
+        <span class="title-line-3">BROS.</span>
+      </div>
+      <div class="start-subtitle">© 2026 FESTA BROS. INC.</div>
+      <div class="press-start-blink">PRESS START</div>
+      <button id="start-btn" class="snes-btn snes-btn--primary" aria-label="Iniciar jogo">
+        ▶ JOGAR
+      </button>
+      <div class="start-hint">Jogue a fase para revelar o convite!</div>
+    </div>
+    <!-- Decorative elements -->
+    <div class="start-clouds"></div>
+    <div class="start-ground"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TELA DO JOGO (Game Screen)
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="game-screen" class="game-screen hidden">
+    <!-- HUD overlay -->
+    <div id="hud" class="hud">
+      <div class="hud-section">
+        <span class="hud-label">MARIO</span>
+        <span id="hud-score" class="hud-value">000000</span>
+      </div>
+      <div class="hud-section hud-center">
+        <span class="hud-label">COINS</span>
+        <span id="hud-coins" class="hud-value">×00</span>
+      </div>
+      <div class="hud-section">
+        <span class="hud-label">TIME</span>
+        <span id="hud-time" class="hud-value">400</span>
+      </div>
+      <div class="hud-lives">
+        <span class="hud-label">♥</span>
+        <span id="hud-lives" class="hud-value">3</span>
+      </div>
+    </div>
+
+    <!-- Game canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Touch Controls -->
+    <div id="touch-controls" class="touch-controls">
+      <div class="dpad">
+        <button id="btn-left"  class="dpad-btn dpad-left"  aria-label="Esquerda">◀</button>
+        <button id="btn-right" class="dpad-btn dpad-right" aria-label="Direita">▶</button>
+      </div>
+      <div class="action-buttons">
+        <button id="btn-jump" class="action-btn btn-a" aria-label="Pular">A</button>
+      </div>
+    </div>
+
+    <!-- GAME OVER overlay -->
+    <div id="game-over-overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <div class="overlay-title">GAME OVER</div>
+        <button id="restart-btn" class="snes-btn snes-btn--secondary">▶ TENTAR NOVAMENTE</button>
+      </div>
+    </div>
+
+    <!-- LEVEL CLEAR overlay -->
+    <div id="level-clear-overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <div class="overlay-title level-clear-title">LEVEL CLEAR!</div>
+        <div id="level-clear-score" class="level-clear-score"></div>
+        <div class="level-clear-hint">Revelando o convite...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TELA DO CONVITE (Invite Screen)
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="invite-screen" class="invite-screen hidden">
+
+    <!-- Background decorations -->
+    <div id="invite-bg" class="invite-bg">
+      <div class="stars-container" id="stars-container"></div>
+      <div class="clouds-layer" id="clouds-layer"></div>
+    </div>
+
+    <!-- Floating coins -->
+    <div class="floating-coins" id="floating-coins"></div>
+
+    <!-- Main invite container -->
+    <div class="invite-container">
+
+      <!-- Header -->
+      <header class="invite-header">
+        <div class="invite-header-stars">★ ★ ★ ★ ★</div>
+        <h1 class="invite-title">YOU ARE<br/>INVITED!</h1>
+        <div class="invite-header-stars">★ ★ ★ ★ ★</div>
+      </header>
+
+      <!-- Main card — Mario Kart style -->
+      <main class="invite-card">
+
+        <!-- Kart track perspective background -->
+        <div class="kart-track">
+          <div class="track-road">
+            <div class="track-line"></div>
+            <div class="track-line"></div>
+            <div class="track-line"></div>
+          </div>
+          <div class="track-grass left"></div>
+          <div class="track-grass right"></div>
+        </div>
+
+        <!-- Party info typewriter lines -->
+        <div class="party-info" id="party-info">
+          <div class="info-line" id="info-player">
+            <span class="info-label">PLAYER 1</span>
+            <span class="info-sep">:</span>
+            <span class="info-value" id="val-player"></span>
+          </div>
+          <div class="info-line" id="info-level">
+            <span class="info-label">LEVEL&nbsp;&nbsp;</span>
+            <span class="info-sep">:</span>
+            <span class="info-value" id="val-level"></span>
+          </div>
+          <div class="info-line" id="info-date">
+            <span class="info-label">DATA&nbsp;&nbsp;&nbsp;</span>
+            <span class="info-sep">:</span>
+            <span class="info-value" id="val-date"></span>
+          </div>
+          <div class="info-line" id="info-time">
+            <span class="info-label">HORA&nbsp;&nbsp;&nbsp;</span>
+            <span class="info-sep">:</span>
+            <span class="info-value" id="val-time"></span>
+          </div>
+          <div class="info-line" id="info-local">
+            <span class="info-label">LOCAL&nbsp;&nbsp;</span>
+            <span class="info-sep">:</span>
+            <span class="info-value" id="val-local"></span>
+          </div>
+        </div>
+
+        <!-- Mushroom decorations -->
+        <div class="mushroom-row" id="mushroom-row">
+          <span class="mushroom">🍄</span>
+          <span class="mushroom">⭐</span>
+          <span class="mushroom">🍄</span>
+        </div>
+
+      </main>
+
+      <!-- Action buttons -->
+      <section class="invite-actions">
+        <button id="btn-location" class="snes-btn snes-btn--blue">
+          📍 LOCALIZAÇÃO
+        </button>
+        <button id="btn-info" class="snes-btn snes-btn--yellow">
+          ℹ️ INFORMAÇÕES
+        </button>
+        <button id="btn-confirm" class="snes-btn snes-btn--green">
+          💬 CONFIRMAR
+        </button>
+        <button id="btn-music" class="snes-btn snes-btn--red">
+          🎵 MÚSICA: OFF
+        </button>
+      </section>
+
+      <!-- Footer -->
+      <footer class="invite-footer">
+        <span>SUPER BRUNO BROS. © 2026</span>
+      </footer>
+
+    </div><!-- /.invite-container -->
+  </div><!-- /#invite-screen -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MODAL — INFORMAÇÕES
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="info-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Informações da festa">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">— PAUSE —</span>
+        <button id="modal-close" class="modal-close-btn" aria-label="Fechar">× FECHAR</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="modal-label">TEMA</div>
+          <div class="modal-text">Super Mario Bros 🍄</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-label">TRAJE SUGERIDO</div>
+          <div class="modal-text">Personagem de videogame, Mario, Luigi, Princesa Peach ou qualquer herói!</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-label">CONFIRMAÇÃO</div>
+          <div class="modal-text">Confirme sua presença via WhatsApp até 5 dias antes da festa.</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-label">OBSERVAÇÕES</div>
+          <div class="modal-text">Haverá bolo, brincadeiras e muito mais! Crianças são bem-vindas. 🌟</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="modal-whatsapp" class="snes-btn snes-btn--green modal-btn">
+          💬 CHAMAR NO WHATSAPP
+        </button>
+        <button id="modal-close-bottom" class="snes-btn snes-btn--red modal-btn">
+          × FECHAR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TRANSITION CURTAIN
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="curtain" class="curtain hidden"></div>
+
+  <!-- Entry point -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

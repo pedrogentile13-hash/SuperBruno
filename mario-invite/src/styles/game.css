@@ -1,0 +1,286 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   GAME CSS — Start Screen, Game Canvas, HUD, Controls, Overlays
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Start Screen ─────────────────────────────────────────────────────────── */
+.start-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--color-sky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: var(--z-game);
+  overflow: hidden;
+}
+
+.start-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.start-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.4;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+}
+
+.title-line-1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-white);
+  letter-spacing: 4px;
+}
+
+.title-line-2 {
+  font-size: var(--font-size-hero);
+  color: var(--color-yellow);
+  text-shadow:
+    3px 3px 0 var(--color-orange),
+    6px 6px 0 rgba(0,0,0,0.3);
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+.title-line-3 {
+  font-size: var(--font-size-xl);
+  color: var(--color-red);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+}
+
+.start-subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-white);
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+.press-start-blink {
+  font-size: var(--font-size-md);
+  color: var(--color-white);
+  animation: blink 1s step-start infinite;
+  margin: var(--space-2) 0;
+}
+
+.start-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-yellow);
+  text-align: center;
+  opacity: 0.9;
+  max-width: 260px;
+  line-height: 1.8;
+}
+
+/* Decorative ground strip */
+.start-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-grass) 0px,
+    var(--color-grass) 32px,
+    #008000 32px,
+    #008000 64px
+  );
+  border-top: 4px solid var(--color-black);
+  z-index: 1;
+}
+
+/* Decorative clouds */
+.start-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 60px 30px at 10% 20%, rgba(255,255,255,0.8) 80%, transparent 100%),
+    radial-gradient(ellipse 40px 20px at 8%  18%, rgba(255,255,255,0.8) 80%, transparent 100%),
+    radial-gradient(ellipse 50px 25px at 80% 15%, rgba(255,255,255,0.8) 80%, transparent 100%),
+    radial-gradient(ellipse 35px 18px at 78% 13%, rgba(255,255,255,0.8) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Game Screen ───────────────────────────────────────────────────────────── */
+.game-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--color-sky);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-game);
+  overflow: hidden;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  flex: 1;
+}
+
+/* ─── HUD ───────────────────────────────────────────────────────────────────── */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-3);
+  z-index: var(--z-hud);
+  gap: var(--space-2);
+  border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+.hud-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.hud-center {
+  flex: 1;
+}
+
+.hud-label {
+  font-size: 5px;
+  color: var(--color-white);
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.hud-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-white);
+  margin-top: 2px;
+}
+
+.hud-lives {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* ─── Touch Controls ────────────────────────────────────────────────────────── */
+.touch-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  pointer-events: none;
+  z-index: var(--z-controls);
+}
+
+/* D-Pad */
+.dpad {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: all;
+}
+
+.dpad-btn {
+  width: 56px;
+  height: 56px;
+  background: rgba(0,0,0,0.55);
+  border: 3px solid rgba(255,255,255,0.4);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mario);
+  transition: background 60ms;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.dpad-btn:active,
+.dpad-btn.pressed {
+  background: rgba(255,255,255,0.3);
+  border-color: var(--color-white);
+}
+
+/* Action button */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  pointer-events: all;
+}
+
+.action-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.5);
+  font-family: var(--font-mario);
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 60ms, transform 60ms;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn-a {
+  background: var(--color-red);
+  color: var(--color-white);
+  box-shadow: 0 4px 0 #8B0000, var(--pixel-shadow);
+}
+
+.btn-a:active,
+.btn-a.pressed {
+  background: #ff4444;
+  transform: scale(0.92);
+  box-shadow: 0 2px 0 #8B0000;
+}
+
+/* ─── Overlays ──────────────────────────────────────────────────────────────── */
+.level-clear-title {
+  font-size: var(--font-size-xl);
+  color: var(--color-yellow);
+  text-shadow: 3px 3px 0 var(--color-orange);
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+.level-clear-score {
+  font-size: var(--font-size-sm);
+  color: var(--color-white);
+  margin: var(--space-3) 0;
+  line-height: 2;
+}
+
+.level-clear-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-yellow);
+  animation: blink 0.8s step-start infinite;
+  margin-top: var(--space-4);
+}
