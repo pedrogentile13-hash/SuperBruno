@@ -151,13 +151,6 @@ export class Game {
       return;
     }
 
-    // --- HUD timer ---
-    const timeOut = this.hud.tickTime(dt);
-    if (timeOut && this.state === GAME_STATE.PLAYING) {
-      this._killMario();
-      return;
-    }
-
     // --- Update platforms ---
     for (const p of this.platforms) p.update(dt);
 
@@ -276,22 +269,11 @@ export class Game {
   }
 
   _respawn() {
-    const newLives = this.mario.lives;
-
-    if (newLives <= 0) {
-      this.state          = GAME_STATE.GAME_OVER;
-      this._gameOverTimer = 1.5;
-      return;
-    }
-
-    // Reset Mario position
+    // Infinite retries — no game over, just restart from beginning
     this.mario = new Mario(2 * TILE_SIZE, WORLD_HEIGHT - 4 * TILE_SIZE);
-    this.mario.lives      = newLives;
-    this.mario.invincible = true;
-    this.mario.invincibleTimer = 2.0;
-    this.hud.setLives(newLives);
-    this.hud.update();
-    this.audio.playMusic();
+    this.mario.invincible      = true;
+    this.mario.invincibleTimer = 1.5;
+    this.audio.playMusic('game');
   }
 
   _triggerWin() {
@@ -386,8 +368,8 @@ export class Game {
       ? this.canvas.parentElement.clientHeight
       : window.innerHeight;
 
-    // HUD height is 44px, controls 120px
-    const gameH = H - 44 - 120;
+    // HUD height is 44px, controls 90px
+    const gameH = H - 44 - 90;
 
     this.canvas.width  = Math.round(W  * dpr);
     this.canvas.height = Math.round(gameH * dpr);
