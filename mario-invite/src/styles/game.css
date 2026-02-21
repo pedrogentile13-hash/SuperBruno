@@ -61,6 +61,14 @@
   letter-spacing: 1px;
 }
 
+.start-vs-label {
+  font-size: 8px;
+  color: var(--color-yellow);
+  letter-spacing: 3px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
 .press-start-blink {
   font-size: var(--font-size-md);
   color: var(--color-white);

@@ -10,7 +10,7 @@ export const PARTY_CONFIG = {
     date: '18/04/2026',
     time: '18:00',
     location: {
-      label: 'Ateliê da Vila Buffet',
+      label: 'Ateliê da Vila Buffet - Vila Andrade',
       mapsUrl: 'https://maps.app.goo.gl/Uq8bhkUSY2fPPQGG9',
     },
   },

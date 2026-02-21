@@ -182,70 +182,104 @@
   position: relative;
 }
 
-/* Kart Track — taller and more visible */
-.kart-track {
+/* ─── Battle Banner — Mario vs Bowser (replaces kart track) ─────────── */
+.battle-banner {
   position: relative;
-  height: 100px;
-  background: var(--color-grass);
+  height: 90px;
+  background: linear-gradient(180deg, #08001a 0%, #180030 60%, #280000 100%);
   overflow: hidden;
   border-bottom: 4px solid var(--color-black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-5);
 }
 
-.track-road {
+/* Lava floor */
+.battle-banner::after {
+  content: '';
   position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  width: 62%;
-  height: 100%;
-  background: #666;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg, #ff2200 0px, #ff8800 8px, #ff2200 16px
+  );
+  animation: lavaFlow 0.5s linear infinite;
+}
+
+.battle-mario-side {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  overflow: hidden;
+  align-items: center;
+  gap: 4px;
+  z-index: 1;
 }
 
-.track-line {
-  height: 6px;
-  background: var(--color-yellow);
-  box-shadow: 0 0 6px rgba(251,208,0,0.8);
-  animation: roadMove 0.35s linear infinite;
+.bb-mario-icon {
+  font-size: 42px;
+  animation: bbMarioJump 0.9s ease-in-out infinite alternate;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.7));
 }
 
-@keyframes roadMove {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(100%);  }
+@keyframes bbMarioJump {
+  from { transform: translateY(0)    scale(1);    }
+  to   { transform: translateY(-8px) scale(1.08); }
 }
 
-.track-grass {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20%;
-  background: repeating-linear-gradient(
-    180deg,
-    var(--color-grass) 0px,
-    var(--color-grass) 10px,
-    #008000 10px,
-    #008000 20px
-  );
-}
-.track-grass.left  { left: 0; }
-.track-grass.right { right: 0; }
-
-/* Kart emoji driving on track */
-.track-kart {
-  position: absolute;
-  bottom: 8px;
-  left: 38%;
-  font-size: 28px;
-  animation: kartDrive 2s ease-in-out infinite alternate;
-  filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+.bb-run-arrows {
+  font-size: 8px;
+  color: var(--color-yellow);
+  letter-spacing: 3px;
+  animation: arrowPulse 0.5s steps(3) infinite;
 }
 
-@keyframes kartDrive {
-  from { transform: translateX(-10px) scaleX(1);  }
-  to   { transform: translateX(10px)  scaleX(1);  }
+@keyframes arrowPulse {
+  0%   { opacity: 0.3; }
+  100% { opacity: 1;   }
+}
+
+.battle-banner-vs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 1;
+}
+
+.bb-fire-top, .bb-fire-bot {
+  font-size: 18px;
+  animation: fireSway 0.5s ease-in-out infinite alternate;
+}
+.bb-fire-bot { animation-direction: alternate-reverse; }
+
+.bb-vs-word {
+  font-size: 22px;
+  color: var(--color-yellow);
+  text-shadow: 2px 2px 0 var(--color-red), 5px 5px 0 rgba(0,0,0,0.6);
+  animation: pulse 0.9s ease-in-out infinite alternate;
+}
+
+.battle-bowser-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 1;
+}
+
+.bb-bowser-icon {
+  font-size: 42px;
+  animation: bowserRoarHero 2s ease-in-out infinite;
+  filter: drop-shadow(0 3px 8px rgba(255,80,0,0.6));
+}
+
+.bb-bowser-label {
+  font-size: 6px;
+  color: #ff8844;
+  letter-spacing: 3px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
 }
 
 /* ─── Party Info ────────────────────────────────────────────────────────────── */
@@ -467,10 +501,10 @@
 /* ─── Bowser Section ────────────────────────────────────────────────────────── */
 .bowser-section {
   width: 100%;
-  background: linear-gradient(135deg, #0d2e05 0%, #1c5a0c 50%, #0d2e05 100%);
+  background: #0d2e05;
   border: 4px solid var(--color-black);
   box-shadow:
-    0 0 0 3px #5aaa1a,
+    0 0 0 3px #4a9a10,
     0 0 0 7px var(--color-black),
     6px 6px 0 var(--color-black);
   border-radius: var(--radius-sm);
@@ -614,15 +648,8 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-5) var(--space-3) var(--space-5);
-  background: linear-gradient(
-    160deg,
-    #06040f 0%,
-    #0d0829 40%,
-    #1a1060 70%,
-    #0d0829 100%
-  );
+  background: #0a0a2e;
   overflow: hidden;
-  /* Bottom border separating from card */
   border-bottom: 4px solid var(--color-black);
   box-shadow: 0 6px 0 var(--color-yellow), 0 10px 0 var(--color-black);
   margin-bottom: 10px;
@@ -718,23 +745,19 @@
   overflow: hidden;
 }
 
-/* Mario: blue/sky gradient, neon blue glow */
+/* Mario: solid blue */
 .hero-card--mario {
-  background: linear-gradient(160deg, #0a2060 0%, #1a4aaa 60%, #0d2e7a 100%);
+  background: #1244aa;
   box-shadow:
-    inset 0 0 20px rgba(80,160,255,.25),
     0 0 0 2px #3a7aff,
-    0 0 16px rgba(58,122,255,.5),
     4px 4px 0 var(--color-black);
 }
 
-/* Bowser: dark green + orange fire glow */
+/* Bowser: solid dark with orange border */
 .hero-card--bowser {
-  background: linear-gradient(160deg, #1a0800 0%, #3a1200 60%, #1a0800 100%);
+  background: #1a0800;
   box-shadow:
-    inset 0 0 20px rgba(255,80,0,.2),
-    0 0 0 2px #ff6600,
-    0 0 16px rgba(255,100,0,.5),
+    0 0 0 2px #cc5500,
     4px 4px 0 var(--color-black);
 }
 

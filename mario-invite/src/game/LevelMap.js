@@ -1,11 +1,12 @@
 // ══════════════════════════════════════════════════════════════════════════════
-//  LevelMap.js — Short auto-runner level (~12 seconds)
-//  Mario auto-runs at 190px/s. Flag at ~2300px ≈ 12 seconds.
+//  LevelMap.js — Mario vs Bowser auto-runner (~12 seconds)
+//  Mario runs at 190px/s. Bowser boss at ~2200px ≈ 11.6 seconds.
 // ══════════════════════════════════════════════════════════════════════════════
 
 import { Platform, PLATFORM_TYPE, TILE_SIZE } from './Platform.js';
 import { Enemy } from './Enemy.js';
 import { Coin  } from './Coin.js';
+import { Boss  } from './Boss.js';
 
 const T  = TILE_SIZE; // 32px
 
@@ -26,53 +27,50 @@ function coin(cx, cy) {
   return new Coin(cx - 10, cy - 10, 20);
 }
 
-// ── Flag ──────────────────────────────────────────────────────────────────────
-export class Flag {
-  constructor(x) {
-    this.x          = x;
-    this.y          = GY - 8 * T;
-    this.w          = 8;
-    this.h          = 8 * T;
-    this.poleHeight = 8 * T;
-    this.triggered  = false;
+// ── Bowser's Castle backdrop drawn on canvas ───────────────────────────────────
+// Called WITHIN camera transform — use world coordinates directly.
+export function drawCastle(ctx, camera) {
+  const cx = 2220;           // world X of castle left edge
+  const cy = GY - 5 * T;    // world Y of castle top
+
+  if (!camera.isVisible(cx - 20, cy - 40, 200, 5 * T + 60)) return;
+
+  const sx = Math.round(cx);
+  const sy = Math.round(cy);
+
+  ctx.save();
+
+  // Main tower (dark gray)
+  ctx.fillStyle = '#555';
+  ctx.fillRect(sx, sy, 100, 5 * T);
+
+  // Battlements (top merlons)
+  ctx.fillStyle = '#444';
+  for (let i = 0; i < 4; i++) {
+    ctx.fillRect(sx + 6 + i * 24, sy - 20, 14, 22);
   }
 
-  draw(ctx, camera) {
-    if (!camera.isVisible(this.x - 40, this.y, 80, this.poleHeight + T)) return;
-    const sx = Math.round(this.x);
-    const sy = Math.round(this.y);
+  // Gate arch (dark)
+  ctx.fillStyle = '#222';
+  ctx.fillRect(sx + 30, sy + 5 * T - 52, 40, 52);
+  ctx.beginPath();
+  ctx.arc(sx + 50, sy + 5 * T - 52, 20, Math.PI, 0, false);
+  ctx.fill();
 
-    // Pole
-    ctx.fillStyle = '#AAA';
-    ctx.fillRect(sx, sy, 6, this.poleHeight);
-    // Gold ball
-    ctx.fillStyle = '#FBD000';
-    ctx.beginPath();
-    ctx.arc(sx + 3, sy + 2, 9, 0, Math.PI * 2);
-    ctx.fill();
-    // Flag pennant
-    ctx.fillStyle = '#E52521';
-    ctx.beginPath();
-    ctx.moveTo(sx + 6, sy + 6);
-    ctx.lineTo(sx + 38, sy + 20);
-    ctx.lineTo(sx + 6,  sy + 34);
-    ctx.closePath();
-    ctx.fill();
-    // Base block
-    ctx.fillStyle = '#888';
-    ctx.fillRect(sx - 20, GY, 48, 2 * T);
-    ctx.fillStyle = '#666';
-    ctx.fillRect(sx - 20, GY, 48, 6);
-  }
+  // Window slits
+  ctx.fillStyle = '#ff4400';
+  ctx.fillRect(sx + 14, sy + 20, 12, 22);
+  ctx.fillRect(sx + 74, sy + 20, 12, 22);
 
-  overlaps(mario) {
-    return (
-      mario.x < this.x + 44 &&
-      mario.x + mario.w > this.x - 20 &&
-      mario.y < this.y + this.poleHeight &&
-      mario.y + mario.h > this.y
-    );
-  }
+  // "BOWSER'S CASTLE" label
+  ctx.fillStyle = '#ff6600';
+  ctx.font = 'bold 6px "Press Start 2P", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText("BOWSER'S", sx + 50, sy - 24);
+  ctx.fillText('CASTLE', sx + 50, sy - 14);
+
+  ctx.restore();
 }
 
 // ── Build level ───────────────────────────────────────────────────────────────
@@ -85,38 +83,27 @@ export function buildLevel() {
   platforms.push(ground(0, WORLD_WIDTH));
 
   // ── Pipes (must jump over) ─────────────────────────────────────────────────
-  // Pipe 1 at tile 22 (704px) — intro obstacle
-  platforms.push(pipe(22, 2));
-  // Pipe 2 at tile 44 (1408px) — taller
-  platforms.push(pipe(44, 3));
-  // Pipe 3 at tile 63 (2016px) — final hurdle
-  platforms.push(pipe(63, 2));
+  platforms.push(pipe(22, 2)); // Pipe 1 at 704px
+  platforms.push(pipe(44, 3)); // Pipe 2 at 1408px (taller)
+  platforms.push(pipe(60, 2)); // Pipe 3 at 1920px (before castle)
 
-  // ── Coins (floating above ground level, easy to collect) ──────────────────
-  // Arc over first pipe
-  for (let i = 0; i < 5; i++) {
-    coins.push(coin((19 + i) * T + T / 2, GY - T * 2.5));
-  }
-  // Arc over second pipe
-  for (let i = 0; i < 5; i++) {
-    coins.push(coin((41 + i) * T + T / 2, GY - T * 2.5));
-  }
-  // Coins near flag
-  for (let i = 0; i < 4; i++) {
-    coins.push(coin((68 + i) * T + T / 2, GY - T * 2));
-  }
+  // ── Coins ──────────────────────────────────────────────────────────────────
+  // Arc over pipe 1
+  for (let i = 0; i < 5; i++) coins.push(coin((19 + i) * T + T / 2, GY - T * 2.5));
+  // Arc over pipe 2
+  for (let i = 0; i < 5; i++) coins.push(coin((41 + i) * T + T / 2, GY - T * 2.5));
+  // Coins leading to castle
+  for (let i = 0; i < 5; i++) coins.push(coin((63 + i) * T + T / 2, GY - T * 2));
 
-  // ── Enemies ────────────────────────────────────────────────────────────────
-  // Goomba 1 — at tile 32 (meets Mario ~4.5s in, mid-run)
-  enemies.push(new Enemy(32 * T, GY - T));
-  // Goomba 2 — at tile 50 (meets Mario ~6.7s in)
-  enemies.push(new Enemy(50 * T, GY - T));
-  // Goomba 3 + 4 close pair — at tiles 56 & 57.5 (meets ~8s in)
-  enemies.push(new Enemy(56 * T,       GY - T));
+  // ── Goomba minions ─────────────────────────────────────────────────────────
+  enemies.push(new Enemy(32 * T,       GY - T));   // ~4.5s
+  enemies.push(new Enemy(50 * T,       GY - T));   // ~6.7s
+  enemies.push(new Enemy(56 * T,       GY - T));   // ~8s pair
   enemies.push(new Enemy(57 * T + 20,  GY - T));
 
-  // ── Flag ───────────────────────────────────────────────────────────────────
-  const flag = new Flag(72 * T); // 2304px — ~12.1s at 190px/s
+  // ── Boss — Bowser at Bowser's Castle ───────────────────────────────────────
+  // Positioned at tile 69 (2208px) — Mario arrives ~11.6s at 190px/s
+  const boss = new Boss(69 * T, GY - 52);
 
-  return { platforms, enemies, coins, flag };
+  return { platforms, enemies, coins, boss };
 }

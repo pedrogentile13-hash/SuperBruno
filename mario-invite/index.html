@@ -34,11 +34,12 @@
         <span class="title-line-3">BROS.</span>
       </div>
       <div class="start-subtitle">© 2026 FESTA BROS. INC.</div>
+      <div class="start-vs-label">🍄 MARIO  VS  BOWSER 👹</div>
       <div class="press-start-blink">PRESS START</div>
       <button id="start-btn" class="snes-btn snes-btn--primary" aria-label="Iniciar jogo">
         ▶ JOGAR
       </button>
-      <div class="start-hint">Jogue a fase para revelar o convite!</div>
+      <div class="start-hint">Derrote o Bowser e desbloqueie o convite!</div>
     </div>
     <!-- Decorative elements -->
     <div class="start-clouds"></div>
@@ -60,8 +61,8 @@
         <span id="hud-coins" class="hud-value">×00</span>
       </div>
       <div class="hud-section">
-        <span class="hud-label">AUTO</span>
-        <span class="hud-value" style="font-size:6px;color:#FBD000">RUNNER</span>
+        <span class="hud-label">VS</span>
+        <span class="hud-value" style="font-size:6px;color:#ff6600">BOWSER</span>
       </div>
     </div>
 
@@ -89,7 +90,7 @@
       <div class="overlay-content">
         <div class="overlay-title level-clear-title">LEVEL CLEAR!</div>
         <div id="level-clear-score" class="level-clear-score"></div>
-        <div class="level-clear-hint">Revelando o convite...</div>
+        <div class="level-clear-hint">BOWSER DERROTADO! 🎉</div>
       </div>
     </div>
   </div>
@@ -181,16 +182,21 @@
       <!-- Main card — Mario Kart style -->
       <main class="invite-card">
 
-        <!-- Kart track perspective background -->
-        <div class="kart-track">
-          <div class="track-road">
-            <div class="track-line"></div>
-            <div class="track-line"></div>
-            <div class="track-line"></div>
+        <!-- Battle Banner — Mario vs Bowser -->
+        <div class="battle-banner">
+          <div class="battle-mario-side">
+            <div class="bb-mario-icon">🍄</div>
+            <div class="bb-run-arrows">→→→</div>
           </div>
-          <div class="track-grass left"></div>
-          <div class="track-grass right"></div>
-          <div class="track-kart">🏎️</div>
+          <div class="battle-banner-vs">
+            <div class="bb-fire-top">🔥</div>
+            <div class="bb-vs-word">VS</div>
+            <div class="bb-fire-bot">🔥</div>
+          </div>
+          <div class="battle-bowser-side">
+            <div class="bb-bowser-icon">👹</div>
+            <div class="bb-bowser-label">BOWSER</div>
+          </div>
         </div>
 
         <!-- Party info typewriter lines -->
