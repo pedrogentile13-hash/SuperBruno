@@ -171,7 +171,7 @@
 /* ─── Invite Card ───────────────────────────────────────────────────────────── */
 .invite-card {
   width: 100%;
-  background: var(--color-dark-blue);
+  background: #0e0e28;
   border: 4px solid var(--color-black);
   box-shadow:
     0 0 0 4px var(--color-yellow),
@@ -186,7 +186,7 @@
 .battle-banner {
   position: relative;
   height: 90px;
-  background: linear-gradient(180deg, #08001a 0%, #180030 60%, #280000 100%);
+  background: #0e0e28;
   overflow: hidden;
   border-bottom: 4px solid var(--color-black);
   display: flex;
@@ -288,7 +288,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  background: var(--color-dark-blue);
+  background: #0e0e28;
 }
 
 .info-line {
@@ -349,7 +349,7 @@
   justify-content: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4) var(--space-4);
-  background: linear-gradient(180deg, var(--color-dark-blue), #000055);
+  background: #0e0e28;
   border-top: 3px solid rgba(255,255,255,0.1);
 }
 
@@ -501,7 +501,7 @@
 /* ─── Bowser Section ────────────────────────────────────────────────────────── */
 .bowser-section {
   width: 100%;
-  background: #0d2e05;
+  background: #0e0e28;
   border: 4px solid var(--color-black);
   box-shadow:
     0 0 0 3px #4a9a10,
@@ -648,7 +648,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-5) var(--space-3) var(--space-5);
-  background: #0a0a2e;
+  background: #0e0e28;
   overflow: hidden;
   border-bottom: 4px solid var(--color-black);
   box-shadow: 0 6px 0 var(--color-yellow), 0 10px 0 var(--color-black);
@@ -745,17 +745,17 @@
   overflow: hidden;
 }
 
-/* Mario: solid blue */
+/* Mario: same dark base, blue border */
 .hero-card--mario {
-  background: #1244aa;
+  background: #0e0e28;
   box-shadow:
-    0 0 0 2px #3a7aff,
+    0 0 0 2px #4488ff,
     4px 4px 0 var(--color-black);
 }
 
-/* Bowser: solid dark with orange border */
+/* Bowser: same dark base, orange border */
 .hero-card--bowser {
-  background: #1a0800;
+  background: #0e0e28;
   box-shadow:
     0 0 0 2px #cc5500,
     4px 4px 0 var(--color-black);

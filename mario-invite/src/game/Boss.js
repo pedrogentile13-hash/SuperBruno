@@ -1,11 +1,11 @@
 // ══════════════════════════════════════════════════════════════════════════════
-//  Boss.js — Bowser boss fight (stomp 3× to defeat)
+//  Boss.js — Bowser boss fight (1 stomp to defeat)
 // ══════════════════════════════════════════════════════════════════════════════
 
 const BOSS_W     = 52;
 const BOSS_H     = 52;
 const BOSS_SPEED = 50;
-const BOSS_HP    = 3;
+const BOSS_HP    = 1;
 const GRAVITY    = 900;
 
 export const BOSS_STATE = {
