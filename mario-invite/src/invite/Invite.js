@@ -15,11 +15,8 @@ export class Invite {
     this._anim  = new Animations();
     this._modal = new Modal(audio);
 
-    this._screen     = document.getElementById('invite-screen');
-    this._musicBtn   = document.getElementById('btn-music');
-    this._musicOn    = false;
-
-    this._infoBound  = false;
+    this._screen    = document.getElementById('invite-screen');
+    this._infoBound = false;
   }
 
   /**
@@ -45,8 +42,6 @@ export class Invite {
 
     // Auto-start invite music
     await this._audio.playMusic('invite');
-    this._musicOn = true;
-    this._updateMusicBtn();
   }
 
   // ── Typewriter sequence ───────────────────────────────────────────────────
@@ -110,53 +105,22 @@ export class Invite {
     if (this._infoBound) return;
     this._infoBound = true;
 
-    // Location
-    document.getElementById('btn-location')?.addEventListener('click', () => {
-      window.open(PARTY_CONFIG.birthday.location.mapsUrl, '_blank');
-    });
-
-    // Info modal
-    document.getElementById('btn-info')?.addEventListener('click', () => {
-      this._modal.open();
-    });
-
-    // WhatsApp confirm
+    // Confirm — opens Google Sites RSVP page
     document.getElementById('btn-confirm')?.addEventListener('click', () => {
-      this._openWhatsApp();
+      window.open('https://sites.google.com/view/bruno5anos?usp=sharing', '_blank');
     });
 
-    // Music toggle
-    this._musicBtn?.addEventListener('click', () => {
-      this._toggleMusic();
+    // Decline — opens WhatsApp with a "cannot attend" message
+    document.getElementById('btn-decline')?.addEventListener('click', () => {
+      this._openWhatsAppDecline();
     });
   }
 
-  _openWhatsApp() {
-    const { whatsapp, message } = PARTY_CONFIG.contact;
-    const encoded = encodeURIComponent(message);
+  _openWhatsAppDecline() {
+    const { whatsapp } = PARTY_CONFIG.contact;
+    const msg = 'Olá! Infelizmente não poderei ir ao aniversário do Bruno. 😢';
+    const encoded = encodeURIComponent(msg);
     window.open(`https://wa.me/${whatsapp}?text=${encoded}`, '_blank');
-  }
-
-  async _toggleMusic() {
-    if (this._musicOn) {
-      this._audio.stopMusic();
-      this._musicOn = false;
-    } else {
-      await this._audio.playMusic('invite');
-      this._musicOn = true;
-    }
-    this._updateMusicBtn();
-  }
-
-  _updateMusicBtn() {
-    if (!this._musicBtn) return;
-    if (this._musicOn) {
-      this._musicBtn.textContent = '🎵 MÚSICA: ON';
-      this._musicBtn.style.background = '#43B047';
-    } else {
-      this._musicBtn.textContent = '🎵 MÚSICA: OFF';
-      this._musicBtn.style.background = '#E52521';
-    }
   }
 
   // ── Utility ────────────────────────────────────────────────────────────────
