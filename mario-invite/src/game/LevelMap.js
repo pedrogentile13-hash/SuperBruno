@@ -36,7 +36,7 @@ export function buildLevel() {
 
   // ── Pipes (must jump over) ─────────────────────────────────────────────────
   platforms.push(pipe(22, 2)); // Pipe 1 at 704px
-  platforms.push(pipe(44, 3)); // Pipe 2 at 1408px (taller)
+  platforms.push(pipe(44, 2)); // Pipe 2 at 1408px
   platforms.push(pipe(60, 2)); // Pipe 3 at 1920px (before castle)
 
   // ── Coins ──────────────────────────────────────────────────────────────────

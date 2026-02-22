@@ -47,6 +47,9 @@ export class Game {
 
     this.popups = [];  // ScorePopup[]
 
+    // Flag — player must touch it to win
+    this._flag = { x: WORLD_WIDTH - 200, triggered: false };
+
     this._lastTime = 0;
     this._raf      = null;
 
@@ -93,6 +96,8 @@ export class Game {
 
     this.hud   = new HUD();
     this.popups = [];
+
+    this._flag             = { x: WORLD_WIDTH - 200, triggered: false };
 
     this.state             = GAME_STATE.PLAYING;
     this._gameOverTimer    = 0;
@@ -179,18 +184,22 @@ export class Game {
     // --- Check enemy collisions with Mario ---
     this._checkEnemyCollisions();
 
-    // --- Auto-win when Mario reaches the end of the level ---
-    if (this.mario.x > WORLD_WIDTH - 200 && this.state === GAME_STATE.PLAYING) {
-      this.mario.state = MARIO_STATE.WIN;
-      this.mario.vx    = 0;
-      this.hud.addScore(2000);
-      this.state            = GAME_STATE.LEVEL_CLEAR;
-      this._levelClearTimer = 2.8;
-      this.audio.playSFX('levelClear');
-      this.audio.stopMusic();
-      document.getElementById('level-clear-overlay').classList.remove('hidden');
-      document.getElementById('level-clear-score').innerHTML =
-        `SCORE: ${String(this.hud.score).padStart(6, '0')}<br>COINS: ×${String(this.hud.coins).padStart(2, '0')}`;
+    // --- Flag collision — must touch the bandeira to win ---
+    if (!this._flag.triggered && this.state === GAME_STATE.PLAYING) {
+      const mCx = this.mario.x + this.mario.w / 2;
+      if (mCx > this._flag.x && mCx < this._flag.x + 48) {
+        this._flag.triggered = true;
+        this.mario.state = MARIO_STATE.WIN;
+        this.mario.vx    = 0;
+        this.hud.addScore(2000);
+        this.state            = GAME_STATE.LEVEL_CLEAR;
+        this._levelClearTimer = 3.5;
+        this.audio.playSFX('levelClear');
+        this.audio.stopMusic();
+        document.getElementById('level-clear-overlay').classList.remove('hidden');
+        document.getElementById('level-clear-score').innerHTML =
+          `SCORE: ${String(this.hud.score).padStart(6, '0')}<br>COINS: ×${String(this.hud.coins).padStart(2, '0')}`;
+      }
     }
 
     // --- Check coin collisions ---
@@ -302,6 +311,9 @@ export class Game {
     // Draw coins
     for (const c of this.coins) c.draw(ctx, this.camera);
 
+    // Draw flag
+    this._drawFlag(ctx);
+
     // Draw enemies
     for (const e of this.enemies) e.draw(ctx, this.camera);
 
@@ -315,6 +327,36 @@ export class Game {
     ctx.translate(-Math.round(this.camera.x), -Math.round(this.camera.y));
     for (const p of this.popups) p.draw(ctx);
     ctx.restore();
+  }
+
+  _drawFlag(ctx) {
+    const GY      = WORLD_HEIGHT - 2 * TILE_SIZE; // ground top Y
+    const poleX   = this._flag.x + 4;             // pole center offset
+    const poleH   = 160;
+    const poleTop = GY - poleH;
+
+    // Pole
+    ctx.fillStyle = '#AAAAAA';
+    ctx.fillRect(poleX, poleTop, 6, poleH + 2 * TILE_SIZE);
+    ctx.fillStyle = '#CCCCCC';
+    ctx.fillRect(poleX, poleTop, 2, poleH + 2 * TILE_SIZE);
+
+    // Flag banner (🏁 style — two colored blocks)
+    const fw = 38, fh = 30;
+    ctx.fillStyle = '#E52521';
+    ctx.fillRect(poleX + 6, poleTop + 4, fw, fh / 2);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(poleX + 6, poleTop + 4 + fh / 2, fw, fh / 2);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(poleX + 6, poleTop + 4, fw, fh);
+
+    // Star on flag
+    ctx.fillStyle = '#FBD000';
+    ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('⭐', poleX + 6 + fw / 2, poleTop + 4 + fh / 2);
   }
 
   _drawBackground(ctx) {

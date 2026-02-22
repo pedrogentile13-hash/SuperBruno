@@ -268,3 +268,11 @@
   animation: blink 0.8s step-start infinite;
   margin-top: var(--space-4);
 }
+
+.level-clear-wait {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.7);
+  animation: blink 1.2s step-start infinite;
+  margin-top: var(--space-3);
+  letter-spacing: 2px;
+}
