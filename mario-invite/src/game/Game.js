@@ -197,8 +197,11 @@ export class Game {
         this.audio.playSFX('levelClear');
         this.audio.stopMusic();
         document.getElementById('level-clear-overlay').classList.remove('hidden');
-        document.getElementById('level-clear-score').innerHTML =
-          `SCORE: ${String(this.hud.score).padStart(6, '0')}<br>COINS: ×${String(this.hud.coins).padStart(2, '0')}`;
+        // Restart loading bar animation
+        const fill = document.getElementById('loading-bar-fill');
+        fill.style.animation = 'none';
+        fill.offsetHeight; // force reflow
+        fill.style.animation = '';
       }
     }
 

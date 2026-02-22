@@ -248,31 +248,35 @@
 }
 
 /* ─── Overlays ──────────────────────────────────────────────────────────────── */
-.level-clear-title {
+.aguarde-title {
   font-size: var(--font-size-xl);
   color: var(--color-yellow);
   text-shadow: 3px 3px 0 var(--color-orange);
-  animation: pulse 0.5s ease-in-out infinite alternate;
+  animation: blink 0.6s step-start infinite;
+  letter-spacing: 4px;
+  margin-bottom: var(--space-5);
 }
 
-.level-clear-score {
-  font-size: var(--font-size-sm);
-  color: var(--color-white);
-  margin: var(--space-3) 0;
-  line-height: 2;
+/* Loading bar */
+.loading-bar-track {
+  width: 220px;
+  height: 18px;
+  border: 3px solid var(--color-white);
+  box-shadow:
+    3px 3px 0 var(--color-black),
+    inset 0 0 0 2px rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.4);
+  image-rendering: pixelated;
 }
 
-.level-clear-hint {
-  font-size: var(--font-size-xs);
-  color: var(--color-yellow);
-  animation: blink 0.8s step-start infinite;
-  margin-top: var(--space-4);
+.loading-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FBD000 0%, #E52521 100%);
+  animation: loadBar 3.5s linear forwards;
 }
 
-.level-clear-wait {
-  font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.7);
-  animation: blink 1.2s step-start infinite;
-  margin-top: var(--space-3);
-  letter-spacing: 2px;
+@keyframes loadBar {
+  from { width: 0%; }
+  to   { width: 100%; }
 }
