@@ -342,6 +342,13 @@
 }
 .info-value.typing::after { opacity: 1; }
 
+/* LOCAL line — smaller font so long venue name fits */
+#info-local .info-value {
+  font-size: 9px;
+  white-space: normal;
+  line-height: 1.5;
+}
+
 /* ─── Mushroom row ──────────────────────────────────────────────────────────── */
 .mushroom-row {
   display: flex;
@@ -384,6 +391,7 @@
   padding: 14px var(--space-4);
   font-size: 11px;
   justify-content: flex-start;
+  text-align: left;
   gap: var(--space-3);
   letter-spacing: 1px;
 }
