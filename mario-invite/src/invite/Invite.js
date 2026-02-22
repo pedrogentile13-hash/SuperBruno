@@ -105,6 +105,11 @@ export class Invite {
     if (this._infoBound) return;
     this._infoBound = true;
 
+    // Location
+    document.getElementById('btn-location')?.addEventListener('click', () => {
+      window.open(PARTY_CONFIG.birthday.location.mapsUrl, '_blank');
+    });
+
     // Confirm — opens Google Sites RSVP page
     document.getElementById('btn-confirm')?.addEventListener('click', () => {
       window.open('https://sites.google.com/view/bruno5anos?usp=sharing', '_blank');

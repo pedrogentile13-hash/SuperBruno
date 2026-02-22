@@ -4,9 +4,7 @@
 // ══════════════════════════════════════════════════════════════════════════════
 
 import { Platform, PLATFORM_TYPE, TILE_SIZE } from './Platform.js';
-import { Enemy } from './Enemy.js';
 import { Coin  } from './Coin.js';
-import { Boss  } from './Boss.js';
 
 const T  = TILE_SIZE; // 32px
 
@@ -25,52 +23,6 @@ function pipe(col, heightTiles = 2) {
 
 function coin(cx, cy) {
   return new Coin(cx - 10, cy - 10, 20);
-}
-
-// ── Bowser's Castle backdrop drawn on canvas ───────────────────────────────────
-// Called WITHIN camera transform — use world coordinates directly.
-export function drawCastle(ctx, camera) {
-  const cx = 2220;           // world X of castle left edge
-  const cy = GY - 5 * T;    // world Y of castle top
-
-  if (!camera.isVisible(cx - 20, cy - 40, 200, 5 * T + 60)) return;
-
-  const sx = Math.round(cx);
-  const sy = Math.round(cy);
-
-  ctx.save();
-
-  // Main tower (dark gray)
-  ctx.fillStyle = '#555';
-  ctx.fillRect(sx, sy, 100, 5 * T);
-
-  // Battlements (top merlons)
-  ctx.fillStyle = '#444';
-  for (let i = 0; i < 4; i++) {
-    ctx.fillRect(sx + 6 + i * 24, sy - 20, 14, 22);
-  }
-
-  // Gate arch (dark)
-  ctx.fillStyle = '#222';
-  ctx.fillRect(sx + 30, sy + 5 * T - 52, 40, 52);
-  ctx.beginPath();
-  ctx.arc(sx + 50, sy + 5 * T - 52, 20, Math.PI, 0, false);
-  ctx.fill();
-
-  // Window slits
-  ctx.fillStyle = '#ff4400';
-  ctx.fillRect(sx + 14, sy + 20, 12, 22);
-  ctx.fillRect(sx + 74, sy + 20, 12, 22);
-
-  // "BOWSER'S CASTLE" label
-  ctx.fillStyle = '#ff6600';
-  ctx.font = 'bold 6px "Press Start 2P", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText("BOWSER'S", sx + 50, sy - 24);
-  ctx.fillText('CASTLE', sx + 50, sy - 14);
-
-  ctx.restore();
 }
 
 // ── Build level ───────────────────────────────────────────────────────────────
@@ -95,15 +47,5 @@ export function buildLevel() {
   // Coins leading to castle
   for (let i = 0; i < 5; i++) coins.push(coin((63 + i) * T + T / 2, GY - T * 2));
 
-  // ── Goomba minions ─────────────────────────────────────────────────────────
-  enemies.push(new Enemy(32 * T,       GY - T));   // ~4.5s
-  enemies.push(new Enemy(50 * T,       GY - T));   // ~6.7s
-  enemies.push(new Enemy(56 * T,       GY - T));   // ~8s pair
-  enemies.push(new Enemy(57 * T + 20,  GY - T));
-
-  // ── Boss — Bowser at Bowser's Castle ───────────────────────────────────────
-  // Positioned at tile 69 (2208px) — Mario arrives ~11.6s at 190px/s
-  const boss = new Boss(69 * T, GY - 52);
-
-  return { platforms, enemies, coins, boss };
+  return { platforms, enemies, coins };
 }

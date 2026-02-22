@@ -8,8 +8,7 @@ import { HUD }       from './HUD.js';
 import { Controls }  from './Controls.js';
 import { ScorePopup } from './Coin.js';
 import { ENEMY_STATE } from './Enemy.js';
-import { BOSS_STATE  } from './Boss.js';
-import { buildLevel, drawCastle, WORLD_WIDTH, WORLD_HEIGHT } from './LevelMap.js';
+import { buildLevel, WORLD_WIDTH, WORLD_HEIGHT } from './LevelMap.js';
 import { TILE_SIZE } from './Platform.js';
 
 export const GAME_STATE = {
@@ -39,7 +38,6 @@ export class Game {
     this.platforms  = level.platforms;
     this.enemies    = level.enemies;
     this.coins      = level.coins;
-    this.boss       = level.boss;
 
     // Mario spawn
     this.mario = new Mario(2 * TILE_SIZE, WORLD_HEIGHT - 4 * TILE_SIZE);
@@ -85,7 +83,6 @@ export class Game {
     this.platforms = level.platforms;
     this.enemies   = level.enemies;
     this.coins     = level.coins;
-    this.boss      = level.boss;
 
     this.mario     = new Mario(2 * TILE_SIZE, WORLD_HEIGHT - 4 * TILE_SIZE);
     this.mario.lives = 3;
@@ -179,14 +176,22 @@ export class Game {
       e.update(dt, this.platforms);
     }
 
-    // --- Update boss ---
-    this.boss.update(dt, this.platforms);
-
     // --- Check enemy collisions with Mario ---
     this._checkEnemyCollisions();
 
-    // --- Check boss collision ---
-    this._checkBossCollision();
+    // --- Auto-win when Mario reaches the end of the level ---
+    if (this.mario.x > WORLD_WIDTH - 200 && this.state === GAME_STATE.PLAYING) {
+      this.mario.state = MARIO_STATE.WIN;
+      this.mario.vx    = 0;
+      this.hud.addScore(2000);
+      this.state            = GAME_STATE.LEVEL_CLEAR;
+      this._levelClearTimer = 2.8;
+      this.audio.playSFX('levelClear');
+      this.audio.stopMusic();
+      document.getElementById('level-clear-overlay').classList.remove('hidden');
+      document.getElementById('level-clear-score').innerHTML =
+        `SCORE: ${String(this.hud.score).padStart(6, '0')}<br>COINS: ×${String(this.hud.coins).padStart(2, '0')}`;
+    }
 
     // --- Check coin collisions ---
     for (const c of this.coins) {
@@ -250,54 +255,6 @@ export class Game {
     }
   }
 
-  // ── Boss collision ──────────────────────────────────────────────────────────
-
-  _checkBossCollision() {
-    const boss = this.boss;
-    if (!boss.active) return;
-    if (boss.state === BOSS_STATE.DEAD) return;
-    if (this.mario.invincible) return;
-
-    const mx = this.mario.x, my = this.mario.y, mw = this.mario.w, mh = this.mario.h;
-    const bx = boss.x,        by = boss.y,        bw = boss.w,        bh = boss.h;
-
-    const overlapping = mx < bx + bw && mx + mw > bx && my < by + bh && my + mh > by;
-    if (!overlapping) return;
-
-    // Stomp from above?
-    const mBottom     = my + mh;
-    const bTop        = by;
-    const mPrevBottom = mBottom - this.mario.vy * 0.016;
-
-    if (this.mario.vy > 0 && mPrevBottom <= bTop + 12) {
-      boss.takeDamage();
-      this.mario.bounce();
-      this.hud.addScore(500);
-      this.audio.playSFX('stomp');
-      this.popups.push(new ScorePopup(boss.cx, boss.y, '+500'));
-
-      if (boss.state === BOSS_STATE.DEAD) {
-        // Bowser defeated → level clear!
-        this.mario.state = MARIO_STATE.WIN;
-        this.mario.vx    = 0;
-        this.hud.addScore(2000);
-        this.state            = GAME_STATE.LEVEL_CLEAR;
-        this._levelClearTimer = 2.8;
-        this.audio.playSFX('levelClear');
-        this.audio.stopMusic();
-
-        document.getElementById('level-clear-overlay').classList.remove('hidden');
-        document.getElementById('level-clear-score').innerHTML =
-          `SCORE: ${String(this.hud.score).padStart(6, '0')}<br>COINS: ×${String(this.hud.coins).padStart(2, '0')}`;
-      }
-    } else {
-      // Bowser hits Mario from side
-      if (!this.mario.invincible) {
-        this._killMario();
-      }
-    }
-  }
-
   // ── Death / Respawn ─────────────────────────────────────────────────────────
 
   _killMario() {
@@ -342,14 +299,8 @@ export class Game {
     // Draw platforms
     for (const p of this.platforms) p.draw(ctx, this.camera);
 
-    // Draw Bowser's Castle backdrop
-    drawCastle(ctx, this.camera);
-
     // Draw coins
     for (const c of this.coins) c.draw(ctx, this.camera);
-
-    // Draw boss (Bowser)
-    this.boss.draw(ctx, this.camera);
 
     // Draw enemies
     for (const e of this.enemies) e.draw(ctx, this.camera);

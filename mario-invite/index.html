@@ -34,12 +34,12 @@
         <span class="title-line-3">BROS.</span>
       </div>
       <div class="start-subtitle">© 2026 FESTA BROS. INC.</div>
-      <div class="start-vs-label">🍄 MARIO  VS  BOWSER 👹</div>
+      <div class="start-vs-label">🍄 SUPER MARIO BROS 🌟</div>
       <div class="press-start-blink">PRESS START</div>
       <button id="start-btn" class="snes-btn snes-btn--primary" aria-label="Iniciar jogo">
         ▶ JOGAR
       </button>
-      <div class="start-hint">Derrote o Bowser e desbloqueie o convite!</div>
+      <div class="start-hint">Chegue ao fim da fase e desbloqueie o convite!</div>
     </div>
     <!-- Decorative elements -->
     <div class="start-clouds"></div>
@@ -61,8 +61,8 @@
         <span id="hud-coins" class="hud-value">×00</span>
       </div>
       <div class="hud-section">
-        <span class="hud-label">VS</span>
-        <span class="hud-value" style="font-size:6px;color:#ff6600">BOWSER</span>
+        <span class="hud-label">META</span>
+        <span class="hud-value">⭐</span>
       </div>
     </div>
 
@@ -90,7 +90,7 @@
       <div class="overlay-content">
         <div class="overlay-title level-clear-title">LEVEL CLEAR!</div>
         <div id="level-clear-score" class="level-clear-score"></div>
-        <div class="level-clear-hint">BOWSER DERROTADO! 🎉</div>
+        <div class="level-clear-hint">VOCÊ CHEGOU LÁ! 🎉</div>
       </div>
     </div>
   </div>
@@ -128,36 +128,6 @@
           <span class="hero-coin-spin">🪙</span>
         </div>
 
-        <!-- VS Battle Scene -->
-        <div class="hero-battle">
-
-          <!-- Mario card -->
-          <div class="hero-card hero-card--mario">
-            <div class="hero-card-role">PLAYER 1</div>
-            <div class="hero-card-icon">🍄</div>
-            <div class="hero-card-name">MARIO</div>
-            <div class="hero-card-hp">❤️❤️❤️</div>
-            <div class="hero-card-glow hero-card-glow--blue"></div>
-          </div>
-
-          <!-- VS center -->
-          <div class="hero-vs-col">
-            <div class="hero-vs-bolt">⚡</div>
-            <div class="hero-vs-text">VS</div>
-            <div class="hero-vs-bolt">⚡</div>
-          </div>
-
-          <!-- Bowser card -->
-          <div class="hero-card hero-card--bowser">
-            <div class="hero-card-role">BOSS</div>
-            <div class="hero-card-icon hero-bowser-roar">👹</div>
-            <div class="hero-card-name">BOWSER</div>
-            <div class="hero-card-hp">🔥🔥🔥</div>
-            <div class="hero-card-glow hero-card-glow--orange"></div>
-          </div>
-
-        </div>
-
         <!-- Divider with coins -->
         <div class="hero-divider">
           <span>🪙</span><span class="hero-divider-line"></span>
@@ -181,23 +151,6 @@
 
       <!-- Main card — Mario Kart style -->
       <main class="invite-card">
-
-        <!-- Battle Banner — Mario vs Bowser -->
-        <div class="battle-banner">
-          <div class="battle-mario-side">
-            <div class="bb-mario-icon">🍄</div>
-            <div class="bb-run-arrows">→→→</div>
-          </div>
-          <div class="battle-banner-vs">
-            <div class="bb-fire-top">🔥</div>
-            <div class="bb-vs-word">VS</div>
-            <div class="bb-fire-bot">🔥</div>
-          </div>
-          <div class="battle-bowser-side">
-            <div class="bb-bowser-icon">👹</div>
-            <div class="bb-bowser-label">BOWSER</div>
-          </div>
-        </div>
 
         <!-- Party info typewriter lines -->
         <div class="party-info" id="party-info">
@@ -244,24 +197,11 @@
 
       </main>
 
-      <!-- Bowser Section -->
-      <div class="bowser-section">
-        <div class="bowser-tag">— VILÃO DA FESTA —</div>
-        <div class="bowser-stage">
-          <span class="bowser-fire">🔥</span>
-          <div class="bowser-figure">
-            <span class="bowser-crown">👑</span>
-            <span class="bowser-emoji">👹</span>
-          </div>
-          <span class="bowser-fire">🔥</span>
-        </div>
-        <div class="bowser-speech">
-          GRRR! VOCÊ PASSOU DE FASE!<br>APAREÇA NA FESTA...<br>SE TIVER CORAGEM! 😤
-        </div>
-      </div>
-
       <!-- Action buttons -->
       <section class="invite-actions">
+        <button id="btn-location" class="snes-btn snes-btn--blue">
+          📍 LOCALIZAÇÃO
+        </button>
         <button id="btn-confirm" class="snes-btn snes-btn--green">
           ✅ CONFIRMAR PRESENÇA
         </button>
